@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/titles")
+@RequestMapping("/title")
 public class TitleController {
     private final TitleService titleService;
     public TitleController(TitleService titleService) {

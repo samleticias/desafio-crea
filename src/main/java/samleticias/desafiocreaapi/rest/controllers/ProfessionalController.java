@@ -7,18 +7,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import samleticias.desafiocreaapi.domain.entities.Professional;
 import samleticias.desafiocreaapi.domain.entities.Title;
-import samleticias.desafiocreaapi.exceptions.AlreadyExistException;
-import samleticias.desafiocreaapi.exceptions.InvalidActionException;
-import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
-import samleticias.desafiocreaapi.exceptions.TitleNotFoundException;
+import samleticias.desafiocreaapi.exceptions.*;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
+import samleticias.desafiocreaapi.rest.dto.TitlePK;
 import samleticias.desafiocreaapi.services.ProfessionalService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/professionals")
+@RequestMapping("/professional")
 public class ProfessionalController {
     private final ProfessionalService professionalService;
 
@@ -69,5 +67,14 @@ public class ProfessionalController {
         Professional obj = professionalService.update(professional);
         return ResponseEntity.ok().body(obj);
     }
+
+    @PostMapping("/{professionalId}/add-professional-title")
+    public ResponseEntity<Professional> addProfessionalTitle(@PathVariable(name = "professionalId") Integer professionalId, @RequestBody TitlePK titlePK)
+            throws TitleNotFoundException, ProfessionalNotFoundException, InvalidActionException, DuplicateResourceException
+    {
+        Professional obj = professionalService.insertTitleForProfessional(professionalId, titlePK);
+        return ResponseEntity.ok().body(obj);
+    }
+
 
 }

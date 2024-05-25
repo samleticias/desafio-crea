@@ -1,6 +1,5 @@
 package samleticias.desafiocreaapi.services;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import samleticias.desafiocreaapi.domain.entities.Professional;
@@ -11,7 +10,7 @@ import samleticias.desafiocreaapi.domain.repositories.ProfessionalRepository;
 import samleticias.desafiocreaapi.domain.repositories.TitleRepository;
 import samleticias.desafiocreaapi.exceptions.*;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
-import samleticias.desafiocreaapi.rest.dto.TitleIdDTO;
+import samleticias.desafiocreaapi.rest.dto.TitlePK;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,14 +93,14 @@ public class ProfessionalService {
         // verifica email
         if(!professionalToEdit.getEmail().equals(professionalBefore.getEmail())){
             if(professionalRepository.findProfessionalByEmail(professionalToEdit.getEmail()).isPresent()){
-                throw new InvalidActionException("O email fornecido já está sendo utilizado");
+                throw new InvalidActionException("O email fornecido já está sendo utilizado.");
             }
         }
 
         // verifica código único
         if(!professionalToEdit.getUniqueCode().equals(professionalBefore.getUniqueCode())){
             if(professionalRepository.findProfessionalByUniqueCode(professionalToEdit.getUniqueCode()).isPresent()){
-                throw new InvalidActionException("O código único fornecido já está sendo utilizado");
+                throw new InvalidActionException("O código único fornecido já está sendo utilizado.");
             }
         }
 
@@ -109,7 +108,7 @@ public class ProfessionalService {
         return professionalToEdit;
     }
 
-    public Professional insertTitleForProfessional(Integer professionalId, TitleIdDTO dto)
+    public Professional insertTitleForProfessional(Integer professionalId, TitlePK dto)
             throws ProfessionalNotFoundException,
             DuplicateResourceException,
             InvalidActionException,
@@ -214,10 +213,5 @@ public class ProfessionalService {
         }
         return false;
     }
-
-
-
-
-
 
 }
