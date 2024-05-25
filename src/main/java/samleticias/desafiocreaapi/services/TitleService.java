@@ -17,7 +17,7 @@ public class TitleService {
         this.titleRepository = titleRepository;
     }
 
-    public Title createTitle(TitleDTO titleDTO){
+    public Title registerTitle(TitleDTO titleDTO){
         Title title = new Title();
         title.setDescription(titleDTO.description());
 
