@@ -165,6 +165,21 @@ Response:
 }
 ```
 
+- Ativar profissional
+```
+POST http://localhost:8080/professional/activate/{professionalId} 
+```
+
+- Desativar profissional
+```
+POST http://localhost:8080/professional/deactivate/{professionalId}
+```
+
+- Cancelar profissional
+```
+POST http://localhost:8080/professional/cancel/{professionalId}
+```
+
 - Listar profissionais
 ```
 GET http://localhost:8080/professional
