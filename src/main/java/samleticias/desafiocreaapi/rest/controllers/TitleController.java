@@ -1,6 +1,5 @@
 package samleticias.desafiocreaapi.rest.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,18 +45,6 @@ public class TitleController {
     public ResponseEntity<Void> deleteTitle(@PathVariable Integer id) throws TitleNotFoundException {
         titleService.deleteTitle(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping(value = "/update")
-    public ResponseEntity<Title> updateProfessional(@RequestBody TitleDTO dto) throws TitleNotFoundException, InvalidActionException {
-        Title obj = new Title(dto);
-        obj = titleService.update(obj);
-        return ResponseEntity.ok().body(obj);
-    }
-
-    @PutMapping
-    public ResponseEntity<Title> update(@RequestBody Title title){
-        return new ResponseEntity<>(titleService.update(title), HttpStatus.OK);
     }
 
     @PutMapping(value = "/update")
