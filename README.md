@@ -88,6 +88,54 @@ JSON Raw Body:
 
 ```
 
+- Listar profissionais que pertencem à categoria de um título específico
+```
+GET http://localhost:8080/professional/findProfessionalsByTitle/{titleId}
+JSON Raw Body:
+
+[
+    {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  }
+]
+
+```
+
 - Buscar profissional por id 
 ```
 GET http://localhost:8080/professional/id/{id}
