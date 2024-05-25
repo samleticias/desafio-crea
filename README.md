@@ -51,7 +51,8 @@ cd diretorio_do_projeto
 $ java -jar target/desafio-crea-0.0.1-SNAPSHOT.jar
 ```
 
-A API poderá ser acessada em [localhost:8080](http://localhost:8080).
+A API poderá ser acessada em [localhost:8080](http://localhost:8080).<br>
+Acesso à documentação Swagger usando o seguinte link: http://localhost:8080/swagger-ui/index.html
 
 # API Endpoints
 
@@ -84,6 +85,54 @@ JSON Raw Body:
 {
     "titleId": 0
 }
+
+```
+
+- Listar profissionais que pertencem à categoria de um título específico
+```
+GET http://localhost:8080/professional/findProfessionalsByTitle/{titleId}
+JSON Raw Body:
+
+[
+    {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  }
+]
 
 ```
 
