@@ -214,4 +214,8 @@ public class ProfessionalService {
         return false;
     }
 
+    public List<Professional> findProfessionalsByTitle(Integer titleId) {
+        return professionalRepository.findByTitles_Id(titleId);
+    }
+
 }

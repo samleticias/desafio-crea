@@ -105,4 +105,10 @@ public class ProfessionalController {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping("/findProfessionalsByTitle/{titleId}")
+    public ResponseEntity<List<Professional>> findProfessionalsByTitle(@PathVariable Integer titleId) {
+        List<Professional> professionals = professionalService.findProfessionalsByTitle(titleId);
+        return ResponseEntity.ok(professionals);
+    }
+
 }
