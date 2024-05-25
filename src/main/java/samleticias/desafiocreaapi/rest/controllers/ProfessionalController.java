@@ -1,10 +1,12 @@
 package samleticias.desafiocreaapi.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import samleticias.desafiocreaapi.domain.entities.Professional;
+import samleticias.desafiocreaapi.exceptions.AlreadyExistException;
 import samleticias.desafiocreaapi.exceptions.InvalidActionException;
 import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
@@ -16,8 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/professionals")
 public class ProfessionalController {
-    @Autowired
-    private ProfessionalService professionalService;
+    private final ProfessionalService professionalService;
+
+    public ProfessionalController(ProfessionalService professionalService) {
+        this.professionalService = professionalService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Professional>> findAll(){
@@ -31,21 +36,21 @@ public class ProfessionalController {
         return ResponseEntity.ok().body(obj);
     }
 
-    /*
-    @PostMapping
-    public ResponseEntity<Professional> insertProfessional(@RequestBody Professional obj) {
-        obj = professionalService.saveProfessional(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Professional> findProfessionalByEmail(@PathVariable String email) throws ProfessionalNotFoundException {
+        Professional obj = professionalService.findProfessionalByEmail(email);
+        return ResponseEntity.ok().body(obj);
     }
 
-     */
+    @GetMapping("/{uniqueCode}")
+    public ResponseEntity<Professional> findByUniqueCode(@PathVariable String uniqueCode) throws ProfessionalNotFoundException {
+        Professional obj = professionalService.getByUniqueCode(uniqueCode);
+        return ResponseEntity.ok().body(obj);
+    }
 
     @PostMapping
-    public ResponseEntity<Professional> insertProfessional(@RequestBody ProfessionalDTO dto) {
-        Professional obj = new Professional(dto);
-        obj = professionalService.saveProfessional(obj);
+    public ResponseEntity<Professional> insertProfessional(@RequestBody ProfessionalDTO dto) throws AlreadyExistException, InvalidActionException {
+        Professional obj = professionalService.registerProfessional(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
@@ -57,21 +62,11 @@ public class ProfessionalController {
         return ResponseEntity.noContent().build();
     }
 
-    /*
-    @PutMapping(value = "/update")
-    public ResponseEntity<Professional> updateProfessional(@RequestBody Professional obj) throws ProfessionalNotFoundException, InvalidActionException {
-        obj = professionalService.update(obj);
-        return ResponseEntity.ok().body(obj);
-    }
-
-     */
-
     @PutMapping(value = "/update")
     public ResponseEntity<Professional> updateProfessional(@RequestBody ProfessionalDTO dto) throws ProfessionalNotFoundException, InvalidActionException {
         Professional obj = new Professional(dto);
         obj = professionalService.update(obj);
         return ResponseEntity.ok().body(obj);
     }
-
 
 }
