@@ -14,6 +14,7 @@ import samleticias.desafiocreaapi.rest.dto.TitlePKDTO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfessionalService {
@@ -216,6 +217,13 @@ public class ProfessionalService {
 
     public List<Professional> findProfessionalsByTitle(Integer titleId) {
         return professionalRepository.findByTitles_Id(titleId);
+    }
+
+    public List<Professional> findActiveProfessionals() {
+        List<Professional> allProfessionals = professionalRepository.findAll();
+        return allProfessionals.stream()
+                .filter(professional -> professional.getRegistrationStatus() == RegistrationStatus.ACTIVE)
+                .collect(Collectors.toList());
     }
 
 }

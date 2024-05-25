@@ -111,4 +111,10 @@ public class ProfessionalController {
         return ResponseEntity.ok(professionals);
     }
 
+    @GetMapping("/activeProfessionals")
+    public ResponseEntity<List<Professional>> listActiveProfessionals() {
+        List<Professional> activeProfessionals = professionalService.findActiveProfessionals();
+        return ResponseEntity.ok(activeProfessionals);
+    }
+
 }
