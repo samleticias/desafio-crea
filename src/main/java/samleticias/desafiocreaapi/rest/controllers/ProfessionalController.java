@@ -9,7 +9,7 @@ import samleticias.desafiocreaapi.domain.entities.Professional;
 import samleticias.desafiocreaapi.domain.entities.Title;
 import samleticias.desafiocreaapi.exceptions.*;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
-import samleticias.desafiocreaapi.rest.dto.TitlePK;
+import samleticias.desafiocreaapi.rest.dto.TitlePKDTO;
 import samleticias.desafiocreaapi.services.ProfessionalService;
 
 import java.net.URI;
@@ -30,7 +30,7 @@ public class ProfessionalController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping (value = "/{id}")
+    @GetMapping (value = "/id/{id}")
     public ResponseEntity<Professional> findProfessionalById(@PathVariable Integer id) throws ProfessionalNotFoundException {
         Professional obj = professionalService.findById(id);
         return ResponseEntity.ok().body(obj);
@@ -42,7 +42,7 @@ public class ProfessionalController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping("/{uniqueCode}")
+    @GetMapping("/uniqueCode/{uniqueCode}")
     public ResponseEntity<Professional> findByUniqueCode(@PathVariable String uniqueCode) throws ProfessionalNotFoundException {
         Professional obj = professionalService.getByUniqueCode(uniqueCode);
         return ResponseEntity.ok().body(obj);
@@ -63,18 +63,46 @@ public class ProfessionalController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<Professional> updateProfessional(@RequestBody Professional professional) throws ProfessionalNotFoundException, InvalidActionException {
+    public ResponseEntity<Professional> updateProfessional(@RequestBody Professional professional) throws ProfessionalNotFoundException, InvalidActionException
+    {
         Professional obj = professionalService.update(professional);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping("/{professionalId}/add-professional-title")
-    public ResponseEntity<Professional> addProfessionalTitle(@PathVariable(name = "professionalId") Integer professionalId, @RequestBody TitlePK titlePK)
-            throws TitleNotFoundException, ProfessionalNotFoundException, InvalidActionException, DuplicateResourceException
+    public ResponseEntity<Professional> addProfessionalTitle(@PathVariable(name = "professionalId") Integer professionalId, @RequestBody TitlePKDTO titlePK)
+            throws TitleNotFoundException, ProfessionalNotFoundException,
+            InvalidActionException, DuplicateResourceException
     {
         Professional obj = professionalService.insertTitleForProfessional(professionalId, titlePK);
         return ResponseEntity.ok().body(obj);
     }
 
+    @PostMapping("/activate/{professionalId}")
+    public ResponseEntity<Professional> activateProfessional(@PathVariable Integer professionalId)
+            throws ExistingItemException,
+            ProfessionalNotFoundException
+    {
+        Professional obj = professionalService.activeProfessional(professionalId);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping("/deactivate/{professionalId}")
+    public ResponseEntity<Professional> deactivateProfessional(@PathVariable Integer professionalId)
+            throws ExistingItemException,
+            ProfessionalNotFoundException
+    {
+        Professional obj = professionalService.inactivateProfessional(professionalId);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping("/cancel/{professionalId}")
+    public ResponseEntity<Professional> suspendProfessional(@PathVariable Integer professionalId)
+            throws ExistingItemException,
+            ProfessionalNotFoundException
+    {
+        Professional obj = professionalService.cancelProfessional(professionalId);
+        return ResponseEntity.ok().body(obj);
+    }
 
 }

@@ -10,7 +10,7 @@ import samleticias.desafiocreaapi.domain.repositories.ProfessionalRepository;
 import samleticias.desafiocreaapi.domain.repositories.TitleRepository;
 import samleticias.desafiocreaapi.exceptions.*;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
-import samleticias.desafiocreaapi.rest.dto.TitlePK;
+import samleticias.desafiocreaapi.rest.dto.TitlePKDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -108,7 +108,7 @@ public class ProfessionalService {
         return professionalToEdit;
     }
 
-    public Professional insertTitleForProfessional(Integer professionalId, TitlePK dto)
+    public Professional insertTitleForProfessional(Integer professionalId, TitlePKDTO dto)
             throws ProfessionalNotFoundException,
             DuplicateResourceException,
             InvalidActionException,
@@ -159,7 +159,7 @@ public class ProfessionalService {
         return professional;
     }
 
-    public Professional disableProfessional(Integer id) throws ProfessionalNotFoundException, ExistingItemException {
+    public Professional inactivateProfessional(Integer id) throws ProfessionalNotFoundException, ExistingItemException {
         Professional professional = findById(id);
 
         // verifica se o profissional já possui registro inativo
