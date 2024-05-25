@@ -1,15 +1,17 @@
 package samleticias.desafiocreaapi.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import samleticias.desafiocreaapi.domain.entities.Professional;
+import samleticias.desafiocreaapi.domain.entities.Title;
 import samleticias.desafiocreaapi.domain.entities.enums.ProfessionalType;
+import samleticias.desafiocreaapi.domain.entities.enums.RegistrationStatus;
 import samleticias.desafiocreaapi.domain.repositories.ProfessionalRepository;
 import samleticias.desafiocreaapi.domain.repositories.TitleRepository;
-import samleticias.desafiocreaapi.exceptions.AlreadyExistException;
-import samleticias.desafiocreaapi.exceptions.InvalidActionException;
-import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
+import samleticias.desafiocreaapi.exceptions.*;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
+import samleticias.desafiocreaapi.rest.dto.TitleIdDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +107,81 @@ public class ProfessionalService {
         this.saveProfessional(professionalToEdit);
         return professionalToEdit;
     }
+
+    public Professional insertTitleForProfessional(Integer professionalId, TitleIdDTO dto)
+            throws ProfessionalNotFoundException,
+            DuplicateResourceException,
+            InvalidActionException,
+            TitleNotFoundException
+    {
+        Optional<Professional> professionalAlternative = professionalRepository.findById(professionalId);
+
+        Optional<Title> titleAlternative = titleRepository.findById(dto.titleId());
+
+        if(professionalAlternative.isEmpty()) throw new ProfessionalNotFoundException("Profissional informado não foi encontrado na base de dados.");
+        if(titleAlternative.isEmpty()) throw new TitleNotFoundException("Título informado não foi encontrado na base de dados.");
+
+        Professional professional = professionalAlternative.get();
+        Title title = titleAlternative.get();
+
+
+        if(isProfessionalCancelled(professional))
+        {
+            throw new InvalidActionException("Não é possível atribuir um título a um profissional com registro cancelado.");
+        } else {
+            if(professional.getRegistrationStatus() == null)
+            {
+                activateProfessionalStatus(professional);
+                professional.setUniqueCode();
+            }
+            if(checkProfessionalTitle(professional, title))
+            {
+                throw new DuplicateResourceException("O título informado já está associado ao profissional.");
+            }
+            professional.assignProfessionalTitle(title);
+        }
+
+        this.saveProfessional(professional);
+
+        return professional;
+    }
+
+    public Professional activeProfessional(Integer id) throws ProfessionalNotFoundException, ExistingItemException {
+        Professional professional = findById(id);
+
+        if(checkProfessionalActivity(professional)) throw new ExistingItemException("O profissional já é ativo.");
+
+        activateProfessionalStatus(professional);
+        saveProfessional(professional);
+        return professional;
+    }
+
+    private boolean checkProfessionalExistence(Professional professional){
+        return professionalRepository.findById(professional.getId()).isPresent();
+    }
+
+    private boolean checkProfessionalActivity(Professional professional){
+        return professional.getRegistrationStatus() == RegistrationStatus.ACTIVE;
+    }
+
+    private boolean isProfessionalCancelled(Professional professional){
+        return professional.getRegistrationStatus() == RegistrationStatus.CANCELED;
+    }
+
+    private void activateProfessionalStatus(Professional professional) {
+        professional.setRegistrationStatus(RegistrationStatus.ACTIVE);
+    }
+
+    private boolean checkProfessionalTitle(Professional professional, Title titleForValidation){
+        for(Title title : professional.getTitles()){
+            if(title.equals(titleForValidation)) return true;
+        }
+        return false;
+    }
+
+
+
+
+
 
 }

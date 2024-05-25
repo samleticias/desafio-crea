@@ -48,9 +48,8 @@ public class TitleController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<Title> updateTitle(@RequestBody TitleDTO dto) throws TitleNotFoundException, InvalidActionException {
-        Title obj = new Title(dto);
-        obj = titleService.update(obj);
+    public ResponseEntity<Title> updateTitle(@RequestBody Title title) throws TitleNotFoundException, InvalidActionException {
+        Title obj = titleService.update(title);
         return ResponseEntity.ok().body(obj);
     }
 }

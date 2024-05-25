@@ -69,6 +69,10 @@ public class Professional {
         this.professionalType = dto.professionalType();
     }
 
+    public void assignProfessionalTitle(Title title){
+        this.titles.add(title);
+    }
+
     public void setUniqueCode() {
         this.uniqueCode = id.toString() + "PI";
     }

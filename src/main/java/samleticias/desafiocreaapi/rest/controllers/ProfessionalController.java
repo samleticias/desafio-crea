@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import samleticias.desafiocreaapi.domain.entities.Professional;
+import samleticias.desafiocreaapi.domain.entities.Title;
 import samleticias.desafiocreaapi.exceptions.AlreadyExistException;
 import samleticias.desafiocreaapi.exceptions.InvalidActionException;
 import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
+import samleticias.desafiocreaapi.exceptions.TitleNotFoundException;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
 import samleticias.desafiocreaapi.services.ProfessionalService;
 
@@ -63,9 +65,8 @@ public class ProfessionalController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<Professional> updateProfessional(@RequestBody ProfessionalDTO dto) throws ProfessionalNotFoundException, InvalidActionException {
-        Professional obj = new Professional(dto);
-        obj = professionalService.update(obj);
+    public ResponseEntity<Professional> updateProfessional(@RequestBody Professional professional) throws ProfessionalNotFoundException, InvalidActionException {
+        Professional obj = professionalService.update(professional);
         return ResponseEntity.ok().body(obj);
     }
 
