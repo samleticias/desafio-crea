@@ -52,9 +52,7 @@ $ java -jar target/desafio-crea-0.0.1-SNAPSHOT.jar
 ```
 
 A API poderá ser acessada em [localhost:8080](http://localhost:8080).<br>
-Acesso à documentação Swagger usando os seguintes links:
-- http://localhost:8080/swagger-ui.html
-- http://localhost:8080/swagger-ui/index.html
+Acesso à documentação Swagger usando o seguinte link: http://localhost:8080/swagger-ui/index.html
 
 # API Endpoints
 
