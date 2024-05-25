@@ -9,6 +9,7 @@ Este repositório contém a API desenvolvida como parte do teste técnico para a
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [Postgresql](https://www.postgresql.org/download/)
+- [SpringDoc OpenAPI 3](https://springdoc.org/)
 
 # Práticas adotadas
 
@@ -17,6 +18,7 @@ Este repositório contém a API desenvolvida como parte do teste técnico para a
 - Consultas com Spring Data JPA
 - Injeção de Dependências
 - Tratamento de exceções
+- Geração automática do Swagger com a OpenAPI 3
 
 # Como Executar
   ## Requistos
@@ -91,6 +93,54 @@ JSON Raw Body:
 - Listar profissionais que pertencem à categoria de um título específico
 ```
 GET http://localhost:8080/professional/findProfessionalsByTitle/{titleId}
+JSON Raw Body:
+
+[
+    {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "uniqueCode": "string",
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "birthdate": "2024-05-25",
+    "phone": "string",
+    "professionalType": "REGISTERED",
+    "registrationStatus": "ACTIVE",
+    "visaDate": "2024-05-25",
+    "registrationDate": "2024-05-25",
+    "titles": [
+      {
+        "id": 0,
+        "description": "string"
+      }
+    ]
+  }
+]
+
+```
+
+- Listar profissionais que pertencem à categoria de registro ativo
+```
+GET http://localhost:8080/professional/activeProfessionals
 JSON Raw Body:
 
 [
