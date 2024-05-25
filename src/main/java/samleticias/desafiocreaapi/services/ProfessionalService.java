@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import samleticias.desafiocreaapi.domain.entities.Professional;
 import samleticias.desafiocreaapi.domain.entities.enums.ProfessionalType;
 import samleticias.desafiocreaapi.domain.repositories.ProfessionalRepository;
+import samleticias.desafiocreaapi.domain.repositories.TitleRepository;
+import samleticias.desafiocreaapi.exceptions.AlreadyExistException;
 import samleticias.desafiocreaapi.exceptions.InvalidActionException;
 import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
@@ -14,25 +16,55 @@ import java.util.Optional;
 
 @Service
 public class ProfessionalService {
-    @Autowired
-    private ProfessionalRepository professionalRepository;
+    private final ProfessionalRepository professionalRepository;
+    private final TitleRepository titleRepository;
+
+    private final TitleService titleService;
+
+    public ProfessionalService(ProfessionalRepository professionalRepository,
+                               TitleRepository titleRepository,
+                               TitleService titleService)
+    {
+        this.professionalRepository = professionalRepository;
+        this.titleRepository = titleRepository;
+        this.titleService = titleService;
+    }
 
     public List<Professional> findAll(){
         return professionalRepository.findAll();
     }
 
+    public Professional registerProfessional(ProfessionalDTO professionalDTO) throws AlreadyExistException, InvalidActionException {
+        if(professionalRepository.findProfessionalByEmail(professionalDTO.email()).isPresent()){
+            throw new AlreadyExistException("Já existe um profissional com o e-mail informado.");
+        }
+        Professional professional = new Professional(professionalDTO);
+        verifyProfessionalType(professional);
+
+        this.saveProfessional(professional);
+        return professional;
+    }
+
     public Professional findById(Integer id) throws ProfessionalNotFoundException {
         Optional<Professional> obj = professionalRepository.findById(id);
-        return obj.orElseThrow(() -> new ProfessionalNotFoundException("Profissional não encontrado."));
+        if (obj.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado com o ID informado.");
+        return obj.get();
     }
 
     public Professional findProfessionalByEmail(String email) throws ProfessionalNotFoundException {
         Optional<Professional> obj = professionalRepository.findProfessionalByEmail(email);
-        return obj.orElseThrow(() -> new ProfessionalNotFoundException("Profissional não encontrado com id com esse email."));
+        if (obj.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado com id com esse email.");
+        return obj.get();
     }
 
     public Professional saveProfessional (Professional professional){
         return professionalRepository.save(professional);
+    }
+
+    public Professional getByUniqueCode(String uniqueCode) throws ProfessionalNotFoundException {
+        Optional<Professional> obj = professionalRepository.findProfessionalByUniqueCode(uniqueCode);
+        if(obj.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado com o código único informado.");
+        return obj.get();
     }
 
     public void delete(Integer id) throws ProfessionalNotFoundException {

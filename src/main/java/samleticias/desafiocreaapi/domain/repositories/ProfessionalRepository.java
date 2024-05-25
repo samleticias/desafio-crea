@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ProfessionalRepository extends JpaRepository<Professional, Integer> {
     public Optional<Professional> findProfessionalByEmail(String email);
     public Optional<Professional> findProfessionalByUniqueCode(String uniqueCode);
+
 }

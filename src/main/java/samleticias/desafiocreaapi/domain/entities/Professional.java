@@ -9,7 +9,6 @@ import samleticias.desafiocreaapi.domain.entities.enums.RegistrationStatus;
 import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -38,20 +37,19 @@ public class Professional {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "registration_date", nullable = false)
-    private LocalDateTime registrationDate;
+    private LocalDate registrationDate;
 
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "registration_status")
     private RegistrationStatus registrationStatus;
 
     @Column(name = "professional_type")
     private ProfessionalType professionalType;
 
-    @Column(name = "visa_date")
     private LocalDate visaDate;
+
+    // um profissional pode ter varios titulos e um titulo pode abranger varios profissionais
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -62,7 +60,6 @@ public class Professional {
     private List<Title> titles;
 
     public Professional(ProfessionalDTO dto) {
-        this.id = dto.id();
         this.email = dto.email();
         this.name = dto.name();
         this.password = dto.password();

@@ -4,11 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import samleticias.desafiocreaapi.domain.entities.enums.ProfessionalType;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public record ProfessionalDTO(
-        @NotBlank(message = "Informe o código do cliente.")
-        Integer id,
         @NotBlank(message = "Campo nome é obrigatório.")
         String name,
         @NotBlank(message = "Campo email é obrigatório.")
@@ -17,11 +14,11 @@ public record ProfessionalDTO(
         String password,
         @NotBlank(message = "Campo data de nascimento é obrigatório.")
         LocalDate birthDate,
-        @NotBlank(message = "Campo data de registro é obrigatório.")
-        LocalDateTime registrationDate,
+        LocalDate registrationDate,
         @NotBlank(message = "Campo telefone é obrigatório.")
         String phone,
         @NotBlank(message = "Campo tipo de profissional é obrigatório.")
-        ProfessionalType professionalType
+        ProfessionalType professionalType,
+        LocalDate visaDate
 ){
 }
