@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import samleticias.desafiocreaapi.domain.entities.Professional;
 import samleticias.desafiocreaapi.exceptions.InvalidActionException;
 import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
+import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
 import samleticias.desafiocreaapi.services.ProfessionalService;
 
 import java.net.URI;
@@ -30,11 +31,23 @@ public class ProfessionalController {
         return ResponseEntity.ok().body(obj);
     }
 
+    /*
     @PostMapping
     public ResponseEntity<Professional> insertProfessional(@RequestBody Professional obj) {
         obj = professionalService.saveProfessional(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
                 path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+    }
+
+     */
+
+    @PostMapping
+    public ResponseEntity<Professional> insertProfessional(@RequestBody ProfessionalDTO dto) {
+        Professional obj = new Professional(dto);
+        obj = professionalService.saveProfessional(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
     }
 
@@ -44,8 +57,18 @@ public class ProfessionalController {
         return ResponseEntity.noContent().build();
     }
 
+    /*
     @PutMapping(value = "/update")
     public ResponseEntity<Professional> updateProfessional(@RequestBody Professional obj) throws ProfessionalNotFoundException, InvalidActionException {
+        obj = professionalService.update(obj);
+        return ResponseEntity.ok().body(obj);
+    }
+
+     */
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<Professional> updateProfessional(@RequestBody ProfessionalDTO dto) throws ProfessionalNotFoundException, InvalidActionException {
+        Professional obj = new Professional(dto);
         obj = professionalService.update(obj);
         return ResponseEntity.ok().body(obj);
     }

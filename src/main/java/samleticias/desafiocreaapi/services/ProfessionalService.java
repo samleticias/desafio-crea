@@ -7,6 +7,7 @@ import samleticias.desafiocreaapi.domain.entities.enums.ProfessionalType;
 import samleticias.desafiocreaapi.domain.repositories.ProfessionalRepository;
 import samleticias.desafiocreaapi.exceptions.InvalidActionException;
 import samleticias.desafiocreaapi.exceptions.ProfessionalNotFoundException;
+import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class ProfessionalService {
 
     public Professional findProfessionalByEmail(String email) throws ProfessionalNotFoundException {
         Optional<Professional> obj = professionalRepository.findProfessionalByEmail(email);
-        return obj.orElseThrow(() -> new ProfessionalNotFoundException("Profissional não encontrado."));
+        return obj.orElseThrow(() -> new ProfessionalNotFoundException("Profissional não encontrado com id com esse email."));
     }
 
     public Professional saveProfessional (Professional professional){
@@ -36,7 +37,7 @@ public class ProfessionalService {
 
     public void delete(Integer id) throws ProfessionalNotFoundException {
         Optional<Professional> professional = professionalRepository.findById(id);
-        if(professional.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado.");
+        if(professional.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado para deletar.");
 
         professionalRepository.delete(professional.get());
     }

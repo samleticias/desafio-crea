@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import samleticias.desafiocreaapi.domain.entities.enums.ProfessionalType;
 import samleticias.desafiocreaapi.domain.entities.enums.RegistrationStatus;
+import samleticias.desafiocreaapi.rest.dto.ProfessionalDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -50,6 +52,25 @@ public class Professional {
 
     @Column(name = "visa_date")
     private LocalDate visaDate;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "professional_title",
+            joinColumns = @JoinColumn(name = "professional_id"),
+            inverseJoinColumns = @JoinColumn(name = "title_id")
+    )
+    private List<Title> titles;
+
+    public Professional(ProfessionalDTO dto) {
+        this.id = dto.id();
+        this.email = dto.email();
+        this.name = dto.name();
+        this.password = dto.password();
+        this.birthDate = dto.birthDate();
+        this.registrationDate = dto.registrationDate();
+        this.phone = dto.phone();
+        this.professionalType = dto.professionalType();
+    }
 
     public void setUniqueCode() {
         this.uniqueCode = id.toString() + "PI";
