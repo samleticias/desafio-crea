@@ -55,7 +55,7 @@ public class ProfessionalService {
 
     public Professional findProfessionalByEmail(String email) throws ProfessionalNotFoundException {
         Optional<Professional> obj = professionalRepository.findProfessionalByEmail(email);
-        if (obj.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado com id com esse email.");
+        if (obj.isEmpty()) throw new ProfessionalNotFoundException("Profissional não encontrado com esse email.");
         return obj.get();
     }
 
@@ -207,7 +207,7 @@ public class ProfessionalService {
         professional.setRegistrationStatus(RegistrationStatus.ACTIVE);
     }
 
-    // faz comparação para verificar se o título desejado já está na lista de tíyulos do profissional
+    // faz comparação para verificar se o título desejado já está na lista de títulos do profissional
     private boolean checkProfessionalTitle(Professional professional, Title titleForValidation){
         for(Title title : professional.getTitles()){
             if(title.equals(titleForValidation)) return true;
