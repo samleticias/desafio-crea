@@ -93,7 +93,7 @@ JSON Raw Body:
 - Listar profissionais que pertencem à categoria de um título específico
 ```
 GET http://localhost:8080/professional/findProfessionalsByTitle/{titleId}
-JSON Raw Body:
+Response:
 
 [
     {
@@ -141,7 +141,7 @@ JSON Raw Body:
 - Listar profissionais que pertencem à categoria de registro ativo
 ```
 GET http://localhost:8080/professional/activeProfessionals
-JSON Raw Body:
+Response:
 
 [
     {
@@ -310,7 +310,7 @@ Response:
 - Atualizar profissional
 ```
 PUT http://localhost:8080/professional/update
-Response:
+JSON Raw Body:
 
 {
   "id": 0,
@@ -353,7 +353,7 @@ JSON Raw Body:
 - Listar títulos
 ```
 GET http://localhost:8080/title
-JSON Raw Body:
+Response:
 
 [
   {
@@ -387,7 +387,7 @@ Response:
 
 - Deletar título por id
 ```
-DELETE http://localhost:8080/title/delete/{ID}
+DELETE http://localhost:8080/title/delete/{id}
 ```
 
 
